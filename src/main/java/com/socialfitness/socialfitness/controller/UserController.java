@@ -1,72 +1,85 @@
 package com.socialfitness.socialfitness.controller;
 
 import com.socialfitness.socialfitness.models.User;
+import com.socialfitness.socialfitness.repository.UserRepository;
+import com.socialfitness.socialfitness.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+
+        User savedUser = userService.registerUser(user);
+
+        return savedUser;
+    }
+
     @GetMapping("/users")
-    public List<User> getUsers(){
+    public List<User> getUsers() {
 
-        List<User> users = new ArrayList<>();
-
-        User user1 = new User(1,"Chanuth","Maduka","chanuth@gmail.com","12345");
-        User user2 = new User(2,"Maduka","Kumara","chanuth@gmail.com","123335");
-        users.add(user1);
-        users.add(user2);
+        List<User> users = userRepository.findAll();
 
         return users;
     }
 
     @GetMapping("/users/{userId}")
-    public User getUserById(@PathVariable("userId") Integer id){
+    public User getUserById(@PathVariable("userId") Integer id) throws Exception {
 
-        List<User> users = new ArrayList<>();
+        User user = userService.findUserById(id);
 
-        User user1 = new User(1,"Chanuth","Maduka","chanuth@gmail.com","12345");User user2 = new User(2,"Maduka","Kumara","chanuth@gmail.com","123335");
-        user1.setId(id);
+        return user;
 
-        return user1;
     }
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user){
+    @PutMapping("/users/follow/{userId1}/{userId2}")
+    public User followUserHandler(@PathVariable Integer userId1,@PathVariable Integer userId2) throws Exception {
 
-        User newUser = new User();
-        newUser.setEmail(user.getEmail());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setPassword(user.getPassword());
-        newUser.setId(user.getId());
+        User user = userService.followUser(userId1,userId2);
 
-        return newUser;
+        return user;
     }
-    @PutMapping("/users")
-    public User updateUser(@RequestBody User user){
 
-        User user1 = new User(1,"Chanuth","Maduka","chanuth@gmail.com","12345");
 
-        if(user.getFirstName()!=null){
-            user1.setFirstName(user.getFirstName());
-        }
-        if(user.getLastName()!=null){
-            user1.setLastName(user.getLastName());
-        }
-        if(user.getEmail()!=null){
-            user1.setEmail(user.getEmail());
-        }
+    @PutMapping("/users/{userId}")
+    public User updateUser(@RequestBody User user, @PathVariable Integer userId) throws Exception {
 
-        return user1;
+        User updatedUser = userService.updateUser(user,userId);
+
+        return updatedUser;
     }
 
     @DeleteMapping("/users/{userId}")
-    public String deleteUser(@PathVariable("userId") Integer userId){
+    public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
 
-        return "user deleted ok" + userId;
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            throw new Exception("user does not exit" + userId);
+        }
+
+        userRepository.delete(user.get());
+
+        return "user deleted ok " + userId;
+    }
+
+    @GetMapping("/users/search")
+    public List<User> searchUser(@RequestParam("query") String query) {
+
+        List<User> users = userService.searchUser(query);
+        return users;
     }
 
 }
