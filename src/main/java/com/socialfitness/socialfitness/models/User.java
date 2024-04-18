@@ -2,6 +2,7 @@ package com.socialfitness.socialfitness.models;
 
 public class User {
 
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
@@ -11,11 +12,20 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(Integer id, String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
