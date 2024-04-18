@@ -1,2 +1,4 @@
-package com.socialfitness.socialfitness.response;public class ApiResponse {
+package com.socialfitness.socialfitness.response;
+
+public class ApiResponse {
 }

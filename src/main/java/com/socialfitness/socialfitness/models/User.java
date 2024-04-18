@@ -1,9 +1,6 @@
 package com.socialfitness.socialfitness.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String firstName;
     private String lastName;
@@ -21,12 +19,12 @@ public class User {
     private String gender;
     private List<Integer> followers = new ArrayList<>();
     private List<Integer> followings = new ArrayList<>();
+    private List<Post> savedPost = new ArrayList<>();
     public User() {
 
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String password, String gender, List<Integer> followers, List<Integer> followings) {
-        super();
+    public User(Integer id, String firstName, String lastName, String email, String password, String gender, List<Integer> followers, List<Integer> followings, List<Post> savedPost) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +33,7 @@ public class User {
         this.gender = gender;
         this.followers = followers;
         this.followings = followings;
+        this.savedPost = savedPost;
     }
 
     public Integer getId() {
@@ -45,7 +44,13 @@ public class User {
         this.id = id;
     }
 
+    public List<Post> getSavedPost() {
+        return savedPost;
+    }
 
+    public void setSavedPost(List<Post> savedPost) {
+        this.savedPost = savedPost;
+    }
 
     public String getFirstName() {
         return firstName;
