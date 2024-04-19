@@ -27,7 +27,7 @@ public class UserController {
         return savedUser;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public List<User> getUsers() {
 
         List<User> users = userRepository.findAll();
@@ -35,7 +35,7 @@ public class UserController {
         return users;
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/api/users/{userId}")
     public User getUserById(@PathVariable("userId") Integer id) throws Exception {
 
         User user = userService.findUserById(id);
@@ -44,24 +44,27 @@ public class UserController {
 
     }
 
-    @PutMapping("/users/follow/{userId1}/{userId2}")
-    public User followUserHandler(@PathVariable Integer userId1,@PathVariable Integer userId2) throws Exception {
+    @PutMapping("/api/users/follow/{userId2}")
+    public User followUserHandler(@RequestHeader("Authorization") String jwt ,@PathVariable Integer userId2) throws Exception {
 
-        User user = userService.followUser(userId1,userId2);
+        User reqUser = userService.findUserByJwt(jwt);
+
+        User user = userService.followUser(reqUser.getId(),userId2);
 
         return user;
     }
 
 
-    @PutMapping("/users/{userId}")
-    public User updateUser(@RequestBody User user, @PathVariable Integer userId) throws Exception {
+    @PutMapping("/api/users/{userId}")
+    public User updateUser(@RequestHeader("Authorization") String jwt ,@RequestBody User user) throws Exception {
 
-        User updatedUser = userService.updateUser(user,userId);
+        User reqUser = userService.findUserByJwt(jwt);
+        User updatedUser = userService.updateUser(user,reqUser.getId());
 
         return updatedUser;
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/api/users/{userId}")
     public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
 
         Optional<User> user = userRepository.findById(userId);
@@ -75,11 +78,20 @@ public class UserController {
         return "user deleted ok " + userId;
     }
 
-    @GetMapping("/users/search")
+    @GetMapping("/api/users/search")
     public List<User> searchUser(@RequestParam("query") String query) {
 
         List<User> users = userService.searchUser(query);
         return users;
+    }
+
+    @GetMapping("/api/users/profile")
+    public User getUserFromToken(@RequestHeader("Authorization") String jwt){
+
+        User user = userService.findUserByJwt(jwt);
+        user.setPassword(null);
+
+        return user;
     }
 
 }
