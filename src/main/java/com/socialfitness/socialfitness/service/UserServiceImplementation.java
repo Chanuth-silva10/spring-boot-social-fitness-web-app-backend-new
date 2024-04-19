@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.service;
 
+import com.socialfitness.socialfitness.config.JwtProvider;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +16,7 @@ public class UserServiceImplementation implements UserService{
     UserRepository userRepository;
     @Override
     public User registerUser(User user) {
-        User newUser = new User();
-        newUser.setEmail(user.getEmail());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setPassword(user.getPassword());
-        newUser.setId(user.getId());
-
-        User savedUser = userRepository.save(newUser);
-        return savedUser;
+        return null;
     }
 
     @Override
@@ -46,19 +39,19 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
-    public User followUser(Integer userld1, Integer userld2) throws Exception {
+    public User followUser(Integer reqUserId, Integer userld2) throws Exception {
 
-        User user1 = findUserById(userld1);
+        User reqUser = findUserById(reqUserId);
 
         User user2 = findUserById(userld2);
 
-        user2.getFollowers().add(user1.getId());
-        user1.getFollowers().add(user2.getId());
+        user2.getFollowers().add(reqUser.getId());
+        reqUser.getFollowers().add(user2.getId());
 
-        userRepository.save(user1);
+        userRepository.save(reqUser);
         userRepository.save(user2);
 
-        return user1;
+        return reqUser;
     }
 
     @Override
@@ -81,6 +74,9 @@ public class UserServiceImplementation implements UserService{
         if (user.getEmail() != null) {
             oldUser.setEmail(user.getEmail());
         }
+        if (user.getGender() != null) {
+            oldUser.setGender(user.getGender());
+        }
 
         User updatedUser = userRepository.save(oldUser);
 
@@ -90,5 +86,14 @@ public class UserServiceImplementation implements UserService{
     @Override
     public List<User> searchUser(String query) {
         return userRepository.searchUser(query);
+    }
+
+    @Override
+    public User findUserByJwt(String jwt) {
+
+        String email = JwtProvider.getEmailFromJwtToken(jwt);
+
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 }
