@@ -1,6 +1,7 @@
 package com.socialfitness.socialfitness.service;
 
 import com.socialfitness.socialfitness.config.JwtProvider;
+import com.socialfitness.socialfitness.exceptions.UserException;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,14 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
-    public User findUserById(Integer userld) throws Exception {
+    public User findUserById(Integer userld) throws UserException {
         Optional<User> user = userRepository.findById(userld);
 
         if (user.isPresent()) {
             return user.get();
         }
 
-        throw new Exception("user does not exit" + userld);
+        throw new UserException("user does not exit" + userld);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
-    public User followUser(Integer reqUserId, Integer userld2) throws Exception {
+    public User followUser(Integer reqUserId, Integer userld2) throws UserException {
 
         User reqUser = findUserById(reqUserId);
 
@@ -55,12 +56,12 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
-    public User updateUser(User user, Integer userId) throws Exception {
+    public User updateUser(User user, Integer userId) throws UserException {
 
         Optional<User> user1 = userRepository.findById(userId);
 
         if (user1.isEmpty()) {
-            throw new Exception("User not exit with id" + userId);
+            throw new UserException("User not exit with id" + userId);
         }
 
         User oldUser = user1.get();

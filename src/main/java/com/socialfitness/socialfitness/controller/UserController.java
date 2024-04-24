@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.controller;
 
+import com.socialfitness.socialfitness.exceptions.UserException;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.repository.UserRepository;
 import com.socialfitness.socialfitness.service.UserService;
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users/{userId}")
-    public User getUserById(@PathVariable("userId") Integer id) throws Exception {
+    public User getUserById(@PathVariable("userId") Integer id) throws UserException {
 
         User user = userService.findUserById(id);
 
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/api/users/follow/{userId2}")
-    public User followUserHandler(@RequestHeader("Authorization") String jwt ,@PathVariable Integer userId2) throws Exception {
+    public User followUserHandler(@RequestHeader("Authorization") String jwt ,@PathVariable Integer userId2) throws UserException {
 
         User reqUser = userService.findUserByJwt(jwt);
 
@@ -56,7 +57,7 @@ public class UserController {
 
 
     @PutMapping("/api/users")
-    public User updateUser(@RequestHeader("Authorization") String jwt ,@RequestBody User user) throws Exception {
+    public User updateUser(@RequestHeader("Authorization") String jwt ,@RequestBody User user) throws UserException {
 
         User reqUser = userService.findUserByJwt(jwt);
         User updatedUser = userService.updateUser(user,reqUser.getId());
@@ -65,12 +66,12 @@ public class UserController {
     }
 
     @DeleteMapping("/api/users/{userId}")
-    public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
+    public String deleteUser(@PathVariable("userId") Integer userId) throws UserException {
 
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isEmpty()) {
-            throw new Exception("user does not exit" + userId);
+            throw new UserException("user does not exit" + userId);
         }
 
         userRepository.delete(user.get());
