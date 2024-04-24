@@ -55,7 +55,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/api/users/{userId}")
+    @PutMapping("/api/users")
     public User updateUser(@RequestHeader("Authorization") String jwt ,@RequestBody User user) throws Exception {
 
         User reqUser = userService.findUserByJwt(jwt);
