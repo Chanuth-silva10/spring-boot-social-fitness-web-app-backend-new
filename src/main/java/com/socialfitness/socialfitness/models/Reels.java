@@ -14,7 +14,9 @@ public class Reels {
     private Integer id;
 
     private String title;
+
     private String video;
+
     @ManyToOne
     private User user;
 

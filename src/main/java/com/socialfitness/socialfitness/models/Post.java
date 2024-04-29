@@ -16,11 +16,10 @@ public class Post {
     private String caption;
     private String image;
     private String video;
-
     @ManyToOne
     private User user;
     private LocalDateTime createdAt;
-    @OneToMany
+    @ManyToMany
     private List<User> liked = new ArrayList<>();
     @OneToMany
     private List<Comment> comments = new ArrayList<>();

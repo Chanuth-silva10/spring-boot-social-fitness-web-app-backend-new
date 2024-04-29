@@ -93,8 +93,10 @@ public class PostServiceImplementation implements PostService{
 
         if(post.getLiked().contains(user)){
             post.getLiked().remove(user);
-        }else{}
+        }else{
             post.getLiked().add(user);
+        }
+
 
         return postRepository.save(post);
     }
