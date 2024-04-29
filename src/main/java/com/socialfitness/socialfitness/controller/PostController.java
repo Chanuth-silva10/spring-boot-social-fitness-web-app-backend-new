@@ -68,17 +68,6 @@ public class PostController {
         return new ResponseEntity<List<Post>>(posts,HttpStatus.OK);
     }
 
-    @PutMapping("/api/posts/save/{postId}")
-    public ResponseEntity<Post> savedPostHandler(
-            @PathVariable Integer postId,
-            @RequestHeader("Authorization") String jwt) throws Exception{
-
-        User reqUser = userService.findUserByJwt(jwt);
-
-        Post post=postService.savedPost(postId,reqUser.getId());
-
-        return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
-    }
 
     @PutMapping("/api/posts/like/{postId}")
     public ResponseEntity<Post> likePostHandler(@PathVariable Integer postId,@RequestHeader("Authorization") String jwt) throws Exception{
