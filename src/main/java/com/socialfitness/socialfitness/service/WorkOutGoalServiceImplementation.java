@@ -1,9 +1,8 @@
 package com.socialfitness.socialfitness.service;
 
-import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.User;
-import com.socialfitness.socialfitness.repository.PostRepository;
-import com.socialfitness.socialfitness.repository.UserRepository;
+import com.socialfitness.socialfitness.models.WorkOutGoal;
+import com.socialfitness.socialfitness.repository.WorkOutGoalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,34 +11,32 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PostServiceImplementation implements PostService{
+public class WorkOutGoalServiceImplementation implements WorkOutGoalService{
 
     @Autowired
-    PostRepository postRepository;
+    WorkOutGoalRepository postRepository;
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
 
     @Override
-    public Post createNewPost(Post post, Integer userId) throws Exception {
+    public WorkOutGoal createNewWorkOutGoalPost(WorkOutGoal post, Integer userId) throws Exception {
 
         User user = userService.findUserById(userId);
-        Post newPost = new Post();
+        WorkOutGoal newPost = new WorkOutGoal();
         newPost.setCaption(post.getCaption());
-        newPost.setImage(post.getImage());
+        newPost.setDistanceRun(post.getDistanceRun());
+        newPost.setPushupsCompleted(post.getPushupsCompleted());
+        newPost.setWeightLifted(post.getWeightLifted());
         newPost.setCreatedAt(LocalDateTime.now());
-        newPost.setVideo(post.getVideo());
         newPost.setUser(user);
-
 
         return postRepository.save(newPost);
     }
 
     @Override
-    public String deletePost(Integer postId, Integer userId) throws Exception {
-        Post post = findPostById(postId);
+    public String deleteWorkOutGoalPost(Integer postId, Integer userId) throws Exception {
+        WorkOutGoal post = findWorkOutGoalPostById(postId);
         User user = userService.findUserById(userId);
 
         if(post.getUser().getId()!=user.getId()){
@@ -52,14 +49,14 @@ public class PostServiceImplementation implements PostService{
     }
 
     @Override
-    public List<Post> findPostByUserId(Integer userId) throws Exception {
+    public List<WorkOutGoal> findWorkOutGoalPostByUserId(Integer userId) throws Exception {
 
-        return postRepository.findPostByUserId(userId);
+        return postRepository.findWorkOutGoalPostByUserId(userId);
     }
 
     @Override
-    public Post findPostById(Integer postId) throws Exception {
-        Optional<Post> opt = postRepository.findById(postId);
+    public WorkOutGoal findWorkOutGoalPostById(Integer postId) throws Exception {
+        Optional<WorkOutGoal> opt = postRepository.findById(postId);
         if(opt.isEmpty()){
             throw new Exception("post not found with id " + postId);
         }
@@ -67,13 +64,13 @@ public class PostServiceImplementation implements PostService{
     }
 
     @Override
-    public List<Post> findAllPost() {
+    public List<WorkOutGoal> findAllWorkOutGoalPost() {
         return postRepository.findAll();
     }
 
     @Override
-    public Post likePost(Integer postId, Integer userId) throws Exception {
-        Post post = findPostById(postId);
+    public WorkOutGoal likeWorkOutGoalPost(Integer postId, Integer userId) throws Exception {
+        WorkOutGoal post = findWorkOutGoalPostById(postId);
         User user = userService.findUserById(userId);
 
         if(post.getLiked().contains(user)){

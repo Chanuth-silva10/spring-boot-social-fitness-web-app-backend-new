@@ -13,17 +13,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Comment {
-
+public class WorkOutGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String content;
+    private String caption;
+    private double distanceRun;
+    private int pushupsCompleted;
+    private double weightLifted;
     @ManyToOne
     private User user;
+    private LocalDateTime createdAt;
     @ManyToMany
     private List<User> liked = new ArrayList<>();
-    private LocalDateTime createdAt;
-
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
 
 }
