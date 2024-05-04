@@ -1,10 +1,7 @@
 package com.socialfitness.socialfitness.service;
 
-import com.socialfitness.socialfitness.models.Comment;
-import com.socialfitness.socialfitness.models.Post;
-import com.socialfitness.socialfitness.models.User;
-import com.socialfitness.socialfitness.repository.CommentRepository;
-import com.socialfitness.socialfitness.repository.PostRepository;
+import com.socialfitness.socialfitness.models.*;
+import com.socialfitness.socialfitness.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +12,25 @@ import java.util.Optional;
 public class CommentServiceImplementation implements CommentService{
 
     @Autowired
-    private PostService postService;
-    @Autowired
     private UserService userService;
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
     private PostRepository postRepository;
-
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private MealPlanRepository mealPlanRepository;
+    @Autowired
+    private MealPlanService mealPlanService;
+    @Autowired
+    private WorkOutStatusService workOutStatusService;
+    @Autowired
+    private WorkOutStatusRepository workOutStatusRepository;
+    @Autowired
+    private WorkOutGoalRepository workOutGoalRepository;
+    @Autowired
+    private WorkOutGoalService workOutGoalService;
 
     @Override
     public Comment createComment(Comment comment, Integer postId, Integer userId) throws Exception {
@@ -41,6 +49,63 @@ public class CommentServiceImplementation implements CommentService{
         postRepository.save(post);
 
         return savedComment;
+    }
+
+    @Override
+    public Comment createStatusComment(Comment comment, Integer postId, Integer userId) throws Exception {
+        User user=userService.findUserById(userId);
+
+        WorkOutStatus workOutStatus = workOutStatusService.findWorkOutStatusPostById(postId);
+
+        comment.setUser(user);
+        comment.setContent(comment.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+
+        Comment savedStatusPostComment = commentRepository.save(comment);
+
+        workOutStatus.getComments().add(savedStatusPostComment);
+
+        workOutStatusRepository.save(workOutStatus);
+
+        return savedStatusPostComment;
+    }
+
+    @Override
+    public Comment createMealComment(Comment comment, Integer postId, Integer userId) throws Exception {
+        User user=userService.findUserById(userId);
+
+        MealPlan mealPlan =  mealPlanService.findMealPlanPostById(postId);
+
+        comment.setUser(user);
+        comment.setContent(comment.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+
+        Comment savedMealComment = commentRepository.save(comment);
+
+        mealPlan.getComments().add(savedMealComment);
+
+        mealPlanRepository.save(mealPlan);
+
+        return savedMealComment;
+    }
+
+    @Override
+    public Comment createGoalComment(Comment comment, Integer postId, Integer userId) throws Exception {
+        User user=userService.findUserById(userId);
+
+        WorkOutGoal workOutGoal = workOutGoalService.findWorkOutGoalPostById(postId);
+
+        comment.setUser(user);
+        comment.setContent(comment.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+
+        Comment savedGoalComment = commentRepository.save(comment);
+
+        workOutGoal.getComments().add(savedGoalComment);
+
+        workOutGoalRepository.save(workOutGoal);
+
+        return savedGoalComment;
     }
 
     @Override

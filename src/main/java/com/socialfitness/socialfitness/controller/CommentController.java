@@ -15,7 +15,7 @@ public class CommentController {
     @Autowired
     private UserService userService;
     @PostMapping("/api/comments/post/{postId}")
-    public Comment createComment(@RequestBody Comment comment,
+    public Comment createPostComment(@RequestBody Comment comment,
                                  @RequestHeader("Authorization") String jwt,
                                  @PathVariable("postId") Integer postId) throws Exception {
         User user = userService.findUserByJwt(jwt);
@@ -35,6 +35,45 @@ public class CommentController {
         Comment likedComment = commentService.likeComment(commentId,user.getId());
 
         return likedComment;
+
+    }
+
+    @PostMapping("/api/comments/status/{postId}")
+    public Comment createStatusComment(@RequestBody Comment comment,
+                                 @RequestHeader("Authorization") String jwt,
+                                 @PathVariable("postId") Integer postId) throws Exception {
+        User user = userService.findUserByJwt(jwt);
+
+        Comment createdStatusComment = commentService.createStatusComment(comment,postId,user.getId());
+
+        return createdStatusComment;
+
+
+    }
+
+    @PostMapping("/api/comments/meal/{postId}")
+    public Comment createMealComment(@RequestBody Comment comment,
+                                 @RequestHeader("Authorization") String jwt,
+                                 @PathVariable("postId") Integer postId) throws Exception {
+        User user = userService.findUserByJwt(jwt);
+
+        Comment createdMealComment = commentService.createMealComment(comment,postId,user.getId());
+
+        return createdMealComment;
+
+
+    }
+
+    @PostMapping("/api/comments/goal/{postId}")
+    public Comment createGoalComment(@RequestBody Comment comment,
+                                 @RequestHeader("Authorization") String jwt,
+                                 @PathVariable("postId") Integer postId) throws Exception {
+        User user = userService.findUserByJwt(jwt);
+
+        Comment createdGoalComment = commentService.createGoalComment(comment,postId,user.getId());
+
+        return createdGoalComment;
+
 
     }
 

@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.service;
 
+import com.socialfitness.socialfitness.exceptions.UserException;
 import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.repository.PostRepository;
@@ -84,5 +85,37 @@ public class PostServiceImplementation implements PostService{
 
 
         return postRepository.save(post);
+    }
+
+    @Override
+    public Post updatePost(Integer postId, Post post, Integer userId) throws Exception {
+
+        Optional<Post> post1 = postRepository.findById(postId);
+        Post oldPost = post1.get();
+        User user = userService.findUserById(userId);
+
+        if (post1.isEmpty()) {
+            throw new Exception("Post not exit with id" + postId);
+        }
+
+        if(oldPost.getUser().getId()!=user.getId()){
+            throw new Exception("You can not update another users post.");
+        }
+
+        if (post.getCaption() != null) {
+            oldPost.setCaption(post.getCaption());
+        }
+
+        if (post.getImage() != null) {
+            oldPost.setImage(post.getImage());
+        }
+
+        if (post.getVideo() != null) {
+            oldPost.setVideo(post.getVideo());
+        }
+
+        Post updatedPost = postRepository.save(oldPost);
+
+        return updatedPost;
     }
 }

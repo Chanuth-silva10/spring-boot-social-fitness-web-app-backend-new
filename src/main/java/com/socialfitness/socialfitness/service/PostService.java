@@ -12,4 +12,5 @@ public interface PostService {
     Post findPostById(Integer postId) throws Exception;
     List<Post> findAllPost();
     Post likePost(Integer postId,Integer userId) throws Exception;
+    Post updatePost(Integer postId,Post post, Integer userId) throws Exception;
 }

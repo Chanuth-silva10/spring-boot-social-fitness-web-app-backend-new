@@ -55,7 +55,6 @@ public class UserController {
         return user;
     }
 
-
     @PutMapping("/api/users")
     public User updateUser(@RequestHeader("Authorization") String jwt ,@RequestBody User user) throws UserException {
 
