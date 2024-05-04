@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.controller;
 
+import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.WorkOutGoal;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.response.ApiResponse;
@@ -75,5 +76,15 @@ public class WorkOutGoalController {
         WorkOutGoal post=postService.likeWorkOutGoalPost(postId,reqUser.getId());
 
         return new ResponseEntity<WorkOutGoal>(post,HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/api/goals/{postId}")
+    public ResponseEntity<Post> updateGoalPost(@PathVariable Integer postId, @RequestBody WorkOutGoal post, @RequestHeader("Authorization") String jwt) throws Exception{
+
+        User reqUser = userService.findUserByJwt(jwt);
+
+        WorkOutGoal updatedGoalPost=postService.updateGoalPost(postId, post,reqUser.getId());
+
+        return new ResponseEntity<WorkOutGoal>(updatedGoalPost,HttpStatus.ACCEPTED);
     }
 }

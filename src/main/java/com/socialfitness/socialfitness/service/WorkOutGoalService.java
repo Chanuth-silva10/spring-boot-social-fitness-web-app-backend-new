@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.service;
 
+import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.WorkOutGoal;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface WorkOutGoalService {
     WorkOutGoal findWorkOutGoalPostById(Integer postId) throws Exception;
     List<WorkOutGoal> findAllWorkOutGoalPost();
     WorkOutGoal likeWorkOutGoalPost(Integer postId,Integer userId) throws Exception;
+    WorkOutGoal updateGoalPost(Integer postId, WorkOutGoal post, Integer userId) throws Exception;
 }

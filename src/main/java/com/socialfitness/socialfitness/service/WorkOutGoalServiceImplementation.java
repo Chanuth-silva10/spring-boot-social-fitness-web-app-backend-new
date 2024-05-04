@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.service;
 
+import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.models.WorkOutGoal;
 import com.socialfitness.socialfitness.repository.WorkOutGoalRepository;
@@ -81,5 +82,40 @@ public class WorkOutGoalServiceImplementation implements WorkOutGoalService{
 
 
         return postRepository.save(post);
+    }
+
+    public WorkOutGoal updateGoalPost(Integer postId, WorkOutGoal post, Integer userId) throws Exception {
+
+        Optional<WorkOutGoal> post1 = postRepository.findById(postId);
+        WorkOutGoal oldPost = post1.get();
+        User user = userService.findUserById(userId);
+
+        if (post1.isEmpty()) {
+            throw new Exception("Post not exit with id" + postId);
+        }
+
+        if(oldPost.getUser().getId()!=user.getId()){
+            throw new Exception("You can not update another users post.");
+        }
+
+        if (post.getCaption() != null) {
+            oldPost.setCaption(post.getCaption());
+        }
+
+        if (post.getDistanceRun() != 0.0) {
+            oldPost.setDistanceRun(post.getDistanceRun());
+        }
+
+        if (post.getPushupsCompleted() != 0) {
+            oldPost.setPushupsCompleted(post.getPushupsCompleted());
+        }
+
+        if (post.getWeightLifted() != 0.0) {
+            oldPost.setWeightLifted(post.getWeightLifted());
+        }
+
+        WorkOutGoal updatedPost = postRepository.save(oldPost);
+
+        return updatedPost;
     }
 }
