@@ -1,11 +1,9 @@
 package com.socialfitness.socialfitness.controller;
 
 import com.socialfitness.socialfitness.models.MealPlan;
-import com.socialfitness.socialfitness.models.MealPlan;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.response.ApiResponse;
 import com.socialfitness.socialfitness.service.MealPlanService;
-import com.socialfitness.socialfitness.service.PostService;
 import com.socialfitness.socialfitness.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,5 +76,15 @@ public class MealPlanController {
         MealPlan post=postService.likeMealPlanPost(postId,reqUser.getId());
 
         return new ResponseEntity<MealPlan>(post,HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/api/meals/{postId}")
+    public ResponseEntity<MealPlan> updateMealPlanPost(@PathVariable Integer postId, @RequestBody MealPlan post, @RequestHeader("Authorization") String jwt) throws Exception{
+
+        User reqUser = userService.findUserByJwt(jwt);
+
+        MealPlan updatedMealPost=postService.updateMealPlanPost(postId, post,reqUser.getId());
+
+        return new ResponseEntity<MealPlan>(updatedMealPost,HttpStatus.ACCEPTED);
     }
 }

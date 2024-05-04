@@ -1,6 +1,7 @@
 package com.socialfitness.socialfitness.service;
 
 import com.socialfitness.socialfitness.models.MealPlan;
+import com.socialfitness.socialfitness.models.Post;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface MealPlanService {
     MealPlan findMealPlanPostById(Integer postId) throws Exception;
     List<MealPlan> findAllMealPlanPost();
     MealPlan likeMealPlanPost(Integer postId,Integer userId) throws Exception;
+    MealPlan updateMealPlanPost(Integer postId, MealPlan post, Integer userId) throws Exception;
 }

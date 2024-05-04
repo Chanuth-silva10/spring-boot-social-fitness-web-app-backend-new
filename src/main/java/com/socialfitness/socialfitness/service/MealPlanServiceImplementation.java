@@ -1,6 +1,7 @@
 package com.socialfitness.socialfitness.service;
 
 import com.socialfitness.socialfitness.models.MealPlan;
+import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.repository.MealPlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,33 @@ public class MealPlanServiceImplementation implements MealPlanService{
 
 
         return postRepository.save(post);
+    }
+    @Override
+    public MealPlan updateMealPlanPost(Integer postId, MealPlan post, Integer userId) throws Exception {
+
+        Optional<MealPlan> post1 = postRepository.findById(postId);
+        MealPlan oldPost = post1.get();
+        User user = userService.findUserById(userId);
+
+        if (post1.isEmpty()) {
+            throw new Exception("Post not exit with id" + postId);
+        }
+
+        if(oldPost.getUser().getId()!=user.getId()){
+            throw new Exception("You can not update another users post.");
+        }
+
+        if (post.getCaption() != null) {
+            oldPost.setCaption(post.getCaption());
+        }
+
+        if (post.getImage() != null) {
+            oldPost.setImage(post.getImage());
+        }
+
+
+        MealPlan updatedPost = postRepository.save(oldPost);
+
+        return updatedPost;
     }
 }

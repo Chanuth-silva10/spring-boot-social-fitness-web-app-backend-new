@@ -1,5 +1,6 @@
 package com.socialfitness.socialfitness.controller;
 
+import com.socialfitness.socialfitness.models.Post;
 import com.socialfitness.socialfitness.models.WorkOutStatus;
 import com.socialfitness.socialfitness.models.User;
 import com.socialfitness.socialfitness.response.ApiResponse;
@@ -76,5 +77,15 @@ public class WorkOutStatusController {
         WorkOutStatus post=postService.likeWorkOutStatusPost(postId,reqUser.getId());
 
         return new ResponseEntity<WorkOutStatus>(post,HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/api/status/{postId}")
+    public ResponseEntity<WorkOutStatus> updateStatusPost(@PathVariable Integer postId, @RequestBody WorkOutStatus post, @RequestHeader("Authorization") String jwt) throws Exception{
+
+        User reqUser = userService.findUserByJwt(jwt);
+
+        WorkOutStatus updatedStatusPost=postService.updateStatusPost(postId, post,reqUser.getId());
+
+        return new ResponseEntity<WorkOutStatus>(updatedStatusPost,HttpStatus.ACCEPTED);
     }
 }
