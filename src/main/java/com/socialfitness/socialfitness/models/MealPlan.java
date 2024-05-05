@@ -19,6 +19,8 @@ public class MealPlan {
     private Integer id;
     private String caption;
     private String image;
+    private String recipe;
+    private String dietaryPreferences;
     @ManyToOne
     private User user;
     private LocalDateTime createdAt;

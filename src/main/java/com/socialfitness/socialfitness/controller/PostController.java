@@ -81,13 +81,13 @@ public class PostController {
     }
 
     @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable Integer postId,@RequestBody Post post,@RequestHeader("Authorization") String jwt) throws Exception{
+    public Post updatePost(@PathVariable Integer postId,@RequestBody Post post,@RequestHeader("Authorization") String jwt) throws Exception{
 
         User reqUser = userService.findUserByJwt(jwt);
 
         Post updatedPost=postService.updatePost(postId, post,reqUser.getId());
 
-        return new ResponseEntity<Post>(post,HttpStatus.ACCEPTED);
+        return updatedPost;
     }
 
 }

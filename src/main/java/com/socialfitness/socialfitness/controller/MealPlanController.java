@@ -79,12 +79,12 @@ public class MealPlanController {
     }
 
     @PutMapping("/api/meals/{postId}")
-    public ResponseEntity<MealPlan> updateMealPlanPost(@PathVariable Integer postId, @RequestBody MealPlan post, @RequestHeader("Authorization") String jwt) throws Exception{
+    public MealPlan updateMealPlanPost(@PathVariable Integer postId, @RequestBody MealPlan post, @RequestHeader("Authorization") String jwt) throws Exception{
 
         User reqUser = userService.findUserByJwt(jwt);
 
         MealPlan updatedMealPost=postService.updateMealPlanPost(postId, post,reqUser.getId());
 
-        return new ResponseEntity<MealPlan>(updatedMealPost,HttpStatus.ACCEPTED);
+        return updatedMealPost;
     }
 }

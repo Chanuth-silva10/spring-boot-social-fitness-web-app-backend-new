@@ -25,6 +25,8 @@ public class MealPlanServiceImplementation implements MealPlanService{
         User user = userService.findUserById(userId);
         MealPlan newPost = new MealPlan();
         newPost.setCaption(post.getCaption());
+        newPost.setDietaryPreferences(post.getDietaryPreferences());
+        newPost.setRecipe(post.getRecipe());
         newPost.setImage(post.getImage());
         newPost.setCreatedAt(LocalDateTime.now());
         newPost.setUser(user);
@@ -95,6 +97,14 @@ public class MealPlanServiceImplementation implements MealPlanService{
 
         if(oldPost.getUser().getId()!=user.getId()){
             throw new Exception("You can not update another users post.");
+        }
+
+        if (post.getDietaryPreferences() != null) {
+            oldPost.setDietaryPreferences(post.getDietaryPreferences());
+        }
+
+        if (post.getRecipe() != null) {
+            oldPost.setRecipe(post.getRecipe());
         }
 
         if (post.getCaption() != null) {

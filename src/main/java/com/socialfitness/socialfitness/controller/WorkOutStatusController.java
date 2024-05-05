@@ -80,12 +80,12 @@ public class WorkOutStatusController {
     }
 
     @PutMapping("/api/status/{postId}")
-    public ResponseEntity<WorkOutStatus> updateStatusPost(@PathVariable Integer postId, @RequestBody WorkOutStatus post, @RequestHeader("Authorization") String jwt) throws Exception{
+    public WorkOutStatus updateStatusPost(@PathVariable Integer postId, @RequestBody WorkOutStatus post, @RequestHeader("Authorization") String jwt) throws Exception{
 
         User reqUser = userService.findUserByJwt(jwt);
 
         WorkOutStatus updatedStatusPost=postService.updateStatusPost(postId, post,reqUser.getId());
 
-        return new ResponseEntity<WorkOutStatus>(updatedStatusPost,HttpStatus.ACCEPTED);
+        return updatedStatusPost;
     }
 }
