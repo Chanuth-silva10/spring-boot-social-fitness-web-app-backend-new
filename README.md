@@ -48,9 +48,9 @@ This repository contains the backend implementation for a social fitness web app
 5. Access the application at `http://localhost:8080`
 
 ## Dependencies
-Spring Boot
-Spring Security
-Spring Data JPA
-MySQL
-Maven
-Spring Socket
+Spring Boot | 
+Spring Security | 
+Spring Data JPA | 
+MySQL | 
+Maven | 
+Spring Socket |
