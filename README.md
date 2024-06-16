@@ -32,3 +32,25 @@ This repository contains the backend implementation for a social fitness web app
 1. Clone the repository:
    ```bash
    git clone https://github.com/Chanuth-silva10/spring-boot-social-fitness-web-app-backend-new.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd spring-boot-social-fitness-web-app-backend-new
+   ```
+3. Build the project:
+   ```bash
+   ./mvnw clean install
+   ```
+4. Run the application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+5. Access the application at `http://localhost:8080`
+
+## Dependencies
+Spring Boot
+Spring Security
+Spring Data JPA
+MySQL
+Maven
+Spring Socket
